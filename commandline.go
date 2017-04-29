@@ -10,8 +10,8 @@ func (util *SftpUtil) init() {
 	// Define command-line arguments
 	flag.StringVar(&util.Rdir, "rdir", ".", "Remote directory")
 	flag.StringVar(&util.Ldir, "ldir", ".", "Local directory")
-	flag.StringVar(&util.Filename, "file", "", "file")
-	flag.StringVar(&util.Type, "type", "", "GET or PUT")
+	flag.StringVar(&util.Filename, "file", "", "file (required)")
+	flag.StringVar(&util.Type, "type", "", "GET or PUT (required)")
 }
 
 // Make sure required arguments are specified
