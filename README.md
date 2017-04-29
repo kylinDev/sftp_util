@@ -4,16 +4,31 @@ Example Go-lang command-line utility for SFTP
 * Implements GET and PUT
 * Preserves the unix file permissions (FileInfo.Mode)
 
-A sample main.go for making a stand-alone sftp utilty is provided in [sftp_cmd/main.go](https://github.com/DavidSantia/sftp_util/blob/master/sftp_cmd/main.go)
+### How to use the package
+Confugre the settings for your file transfer, as well as server and credentials, in the SftpUtil struct.  The following comments explain the variables to configure.
+```go
+type SftpUtil struct {
+	Rdir      string       // Remote directory
+	Ldir      string       // Local directory
+	Filename  string       // File to transfer
+	LFilePath string
+	RFilePath string
+	LFileInfo os.FileInfo
+	RFileInfo os.FileInfo
+	Type      string        // GET or PUT
+	User      string        // Username
+	Pass      string        // Password
+	Host      string        // Hostname or IP Address
+	Port      string        // TCP port
+	Client    *sftp.Client
+}
+```
+A routine GetCmdLine() to read comand-line flags for setting file info and type of transfer.
+
+### Sample Code
+A sample main() routine for making a stand-alone sftp utilty is provided in [sftp_cmd/main.go](https://github.com/DavidSantia/sftp_util/blob/master/sftp_cmd/main.go)
 
 ```go
-import (
-	"fmt"
-	"os"
-
-	"github.com/DavidSantia/sftp_util"
-)
-
 func main() {
 
 	cmd, err := sftp_util.GetCmdLine()
