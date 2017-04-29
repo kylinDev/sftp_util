@@ -11,19 +11,19 @@ type SftpUtil struct {
 	Rdir      string       // Remote directory
 	Ldir      string       // Local directory
 	Filename  string       // File to transfer
+	Type      string       // GET or PUT
 	LFilePath string
 	RFilePath string
 	LFileInfo os.FileInfo
 	RFileInfo os.FileInfo
-	Type      string        // GET or PUT
-	User      string        // Username
-	Pass      string        // Password
-	Host      string        // Hostname or IP Address
-	Port      string        // TCP port
+	User      string       // Username
+	Pass      string       // Password
+	Host      string       // Hostname or IP Address
+	Port      string       // TCP port
 	Client    *sftp.Client
 }
 ```
-A routine GetCmdLine() to read comand-line flags for setting file info and type of transfer.
+The routine GetCmdLine() reads comand-line flags to specify the file details and type of transfer. These parameters set the first four fields in the SftpUtil struct.
 
 ### Sample Code
 A sample main() routine for making a stand-alone sftp utilty is provided in [sftp_cmd/main.go](https://github.com/DavidSantia/sftp_util/blob/master/sftp_cmd/main.go)
