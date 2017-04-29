@@ -21,7 +21,7 @@ func (util *SftpUtil) GetFile() (err error) {
 		return fmt.Errorf("Cannot read remote file: %v", err)
 	}
 
-	lfile, err = os.OpenFile(util.LFilePath, os.O_CREATE+os.O_WRONLY, util.RFileInfo.Mode())
+	lfile, err = os.OpenFile(util.LFilePath, os.O_CREATE|os.O_WRONLY, util.RFileInfo.Mode())
 	if err != nil {
 		return fmt.Errorf("Cannot write local file: %v", err)
 	}
