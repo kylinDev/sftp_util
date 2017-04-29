@@ -5,7 +5,7 @@ Example Go-lang command-line utility for SFTP
 * Preserves the unix file permissions (FileInfo.Mode)
 
 ### How to use the package
-Confugre the settings for your file transfer, as well as server and credentials, in the SftpUtil struct.  The following comments explain the variables to configure.
+Confugre the settings for your file transfer, as well as server and credentials, in the SftpUtil struct.  The following comments explain the fields to configure:
 ```go
 type SftpUtil struct {
 	Rdir      string       // Remote directory
