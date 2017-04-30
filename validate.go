@@ -9,11 +9,6 @@ import (
 func (util *SftpUtil) ValidateDirs() (err error) {
 	var remoteDirInfo os.FileInfo
 
-	_, err = os.Stat(util.Ldir)
-	if err != nil {
-		return fmt.Errorf("Local directory %q missing: %v", util.Ldir, err)
-	}
-
 	// Validate remote directory exists
 	remoteDirInfo, err = util.Client.Stat(util.Rdir)
 	if err != nil {
@@ -21,6 +16,16 @@ func (util *SftpUtil) ValidateDirs() (err error) {
 	}
 	if !remoteDirInfo.IsDir() {
 		return fmt.Errorf("Remote path %s is not a directory", util.Rdir)
+	}
+	if util.Type == "LS" {
+		// For LS, nothing more to check
+		return
+	}
+
+	// Validate local directory exists
+	_, err = os.Stat(util.Ldir)
+	if err != nil {
+		return fmt.Errorf("Local directory %q missing: %v", util.Ldir, err)
 	}
 
 	// Validate remote file

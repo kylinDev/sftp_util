@@ -18,7 +18,11 @@ func (util *SftpUtil) Connect() (err error) {
 	var sshClient *ssh.Client
 
 	server := util.Host + ":" + util.Port
-	log.Printf("Connecting to %s\n", server)
+
+	// LS will give directory listing, no other output
+	if util.Type != "LS" {
+		log.Printf("Connecting to %s\n", server)
+	}
 
 	config := &ssh.ClientConfig{
 		User:            util.User,
