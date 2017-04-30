@@ -2,9 +2,9 @@ package sftp_util
 
 import (
 	"fmt"
-	"github.com/pkg/sftp"
-	"log"
 	"os"
+
+	"github.com/pkg/sftp"
 )
 
 func (util *SftpUtil) GetFile() (err error) {
@@ -26,7 +26,7 @@ func (util *SftpUtil) GetFile() (err error) {
 		return fmt.Errorf("Cannot write local file: %v", err)
 	}
 
-	log.Printf("Getting File %s\n", util.rFilePath)
+	fmt.Printf("Getting File %s\n", util.rFilePath)
 	var b []byte = make([]byte, BUFSIZE)
 	var n, m int
 	for {

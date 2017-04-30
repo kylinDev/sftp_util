@@ -2,9 +2,9 @@ package sftp_util
 
 import (
 	"fmt"
-	"github.com/pkg/sftp"
-	"log"
 	"os"
+
+	"github.com/pkg/sftp"
 )
 
 func (util *SftpUtil) PutFile() (err error) {
@@ -18,13 +18,11 @@ func (util *SftpUtil) PutFile() (err error) {
 
 	util.lFileInfo, err = os.Stat(util.lFilePath)
 	if err != nil {
-		log.Printf("Cannot get local file permissions: %v\n", err)
-		return
+		return fmt.Errorf("Cannot get local file permissions: %v", err)
 	}
 	lfile, err = os.Open(util.lFilePath)
 	if err != nil {
-		log.Printf("Cannot open local file: %v\n", err)
-		return
+		return fmt.Errorf("Cannot open local file: %v", err)
 	}
 
 	rfile, err = util.Client.Create(util.rFilePath)
@@ -32,7 +30,7 @@ func (util *SftpUtil) PutFile() (err error) {
 		return fmt.Errorf("Cannot create remote file: %v", err)
 	}
 
-	log.Printf("Putting File %s\n", util.rFilePath)
+	fmt.Printf("Putting File %s\n", util.rFilePath)
 	var b []byte = make([]byte, BUFSIZE)
 	var n, m int
 	for {

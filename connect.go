@@ -2,7 +2,6 @@ package sftp_util
 
 import (
 	"fmt"
-	"log"
 
 	"github.com/pkg/sftp"
 	"golang.org/x/crypto/ssh"
@@ -21,7 +20,7 @@ func (util *SftpUtil) Connect() (err error) {
 
 	// LS will give directory listing, no other output
 	if util.Type != "LS" {
-		log.Printf("Connecting to %s\n", server)
+		fmt.Printf("Connecting to %s\n", server)
 	}
 
 	config := &ssh.ClientConfig{
