@@ -44,8 +44,8 @@ func GetCmdLine() (util *SftpUtil, err error) {
 		return nil, err
 	}
 
-	util.LFilePath = filepath.Join(util.Ldir, util.Filename)
-	util.RFilePath = filepath.Join(util.Rdir, util.Filename)
+	util.lFilePath = filepath.Join(util.Ldir, util.Filename)
+	util.rFilePath = filepath.Join(util.Rdir, util.Filename)
 
 	// Return commandline context
 	return util, nil

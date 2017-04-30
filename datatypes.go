@@ -7,18 +7,18 @@ import (
 )
 
 type SftpUtil struct {
-	Rdir      string
-	Ldir      string
-	Filename  string
-	LFilePath string
-	RFilePath string
-	LFileInfo os.FileInfo
-	RFileInfo os.FileInfo
-	Type      string
-	User      string
-	Pass      string
-	Host      string
-	Port      string
+	Rdir      string // Remote directory
+	Ldir      string // Local directory
+	Filename  string // File to transfer
+	Type      string // GET or PUT
+	User      string // Username
+	Pass      string // Password
+	Host      string // Hostname or IP Address
+	Port      string // TCP port
+	lFilePath string
+	rFilePath string
+	lFileInfo os.FileInfo
+	rFileInfo os.FileInfo
 	Client    *sftp.Client
 }
 

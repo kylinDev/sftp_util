@@ -16,17 +16,17 @@ func (util *SftpUtil) GetFile() (err error) {
 		return
 	}
 
-	rfile, err = util.Client.Open(util.RFilePath)
+	rfile, err = util.Client.Open(util.rFilePath)
 	if err != nil {
 		return fmt.Errorf("Cannot read remote file: %v", err)
 	}
 
-	lfile, err = os.OpenFile(util.LFilePath, os.O_CREATE|os.O_WRONLY, util.RFileInfo.Mode())
+	lfile, err = os.OpenFile(util.lFilePath, os.O_CREATE|os.O_WRONLY, util.rFileInfo.Mode())
 	if err != nil {
 		return fmt.Errorf("Cannot write local file: %v", err)
 	}
 
-	log.Printf("Getting File %s\n", util.RFilePath)
+	log.Printf("Getting File %s\n", util.rFilePath)
 	var b []byte = make([]byte, BUFSIZE)
 	var n, m int
 	for {

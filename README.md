@@ -8,22 +8,22 @@ Example Go-lang command-line utility for SFTP
 Confugre the settings for your file transfer, as well as server and credentials, in the SftpUtil struct.  The following comments explain the fields to configure:
 ```go
 type SftpUtil struct {
-	Rdir      string       // Remote directory
-	Ldir      string       // Local directory
-	Filename  string       // File to transfer
-	Type      string       // GET or PUT
-	LFilePath string
-	RFilePath string
-	LFileInfo os.FileInfo
-	RFileInfo os.FileInfo
-	User      string       // Username
-	Pass      string       // Password
-	Host      string       // Hostname or IP Address
-	Port      string       // TCP port
+	Rdir      string // Remote directory
+	Ldir      string // Local directory
+	Filename  string // File to transfer
+	Type      string // GET or PUT
+	User      string // Username
+	Pass      string // Password
+	Host      string // Hostname or IP Address
+	Port      string // TCP port
+	lFilePath string
+	rFilePath string
+	lFileInfo os.FileInfo
+	rFileInfo os.FileInfo
 	Client    *sftp.Client
 }
 ```
-The routine GetCmdLine() reads comand-line flags to specify the file details and type of transfer. These parameters set the first four fields in the SftpUtil struct.
+The routine GetCmdLine() reads comand-line flags to specify the file details and type of transfer. These parameters set the first four fields in the above struct.
 
 ### Sample Code
 A sample main() routine for making a stand-alone sftp utilty is provided in [sftp_cmd/main.go](https://github.com/DavidSantia/sftp_util/blob/master/sftp_cmd/main.go)

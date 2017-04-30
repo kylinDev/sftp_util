@@ -10,29 +10,29 @@ import (
 func (util *SftpUtil) PutFile() (err error) {
 	var lfile *os.File
 	var rfile *sftp.File
-
+	
 	err = util.ValidateDirs()
 	if err != nil {
 		return
 	}
 
-	util.LFileInfo, err = os.Stat(util.LFilePath)
+	util.lFileInfo, err = os.Stat(util.lFilePath)
 	if err != nil {
 		log.Printf("Cannot get local file permissions: %v\n", err)
 		return
 	}
-	lfile, err = os.Open(util.LFilePath)
+	lfile, err = os.Open(util.lFilePath)
 	if err != nil {
 		log.Printf("Cannot open local file: %v\n", err)
 		return
 	}
 
-	rfile, err = util.Client.Create(util.RFilePath)
+	rfile, err = util.Client.Create(util.rFilePath)
 	if err != nil {
 		return fmt.Errorf("Cannot create remote file: %v", err)
 	}
 
-	log.Printf("Putting File %s\n", util.RFilePath)
+	log.Printf("Putting File %s\n", util.rFilePath)
 	var b []byte = make([]byte, BUFSIZE)
 	var n, m int
 	for {
@@ -52,7 +52,7 @@ func (util *SftpUtil) PutFile() (err error) {
 		}
 	}
 
-	err = util.Client.Chmod(util.RFilePath, util.LFileInfo.Mode())
+	err = util.Client.Chmod(util.rFilePath, util.lFileInfo.Mode())
 	if err != nil {
 		return fmt.Errorf("Cannot set remote file permissions: %v", err)
 	}

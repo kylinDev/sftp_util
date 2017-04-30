@@ -24,21 +24,23 @@ func (util *SftpUtil) ValidateDirs() (err error) {
 	}
 
 	// Validate remote file
-	util.RFileInfo, err = util.Client.Stat(util.RFilePath)
-	if err == nil && util.RFileInfo.IsDir() {
-		return fmt.Errorf("Remote file %s is a directory", util.RFilePath)
+	util.rFileInfo, err = util.Client.Stat(util.rFilePath)
+	if err == nil && util.rFileInfo.IsDir() {
+		return fmt.Errorf("Remote file %s is a directory", util.rFilePath)
 	}
 
 	if util.Type == "GET" {
 		// For Get, remote file must exist
 		if err != nil {
-			return fmt.Errorf("Problem accessing remote file %s: %v", util.RFilePath, err)
+			return fmt.Errorf("Problem accessing remote file %s: %v", util.rFilePath, err)
 		}
 	} else {
 		// For Put, warn if it exists
 		if err == nil {
-			log.Printf("Remote file %s already exists, will overwrite", util.RFilePath)
+			log.Printf("Remote file %s already exists, will overwrite", util.rFilePath)
 		}
+		// File doesn't exist is normal, clear error
+		err = nil
 	}
 	return
 }
