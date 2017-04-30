@@ -40,6 +40,12 @@ func main() {
 			fmt.Printf("PUT error: %v\n", err)
 			os.Exit(1)
 		}
+	} else if cmd.Type == "RM" {
+		err = cmd.RmFile()
+		if err != nil {
+			fmt.Printf("RM error: %v\n", err)
+			os.Exit(1)
+		}
 	} else {
 		err = cmd.LsDir()
 		if err != nil {

@@ -21,10 +21,12 @@ func (util *SftpUtil) ValidateDirs() (err error) {
 		return
 	}
 
-	// Validate local directory exists
-	_, err = os.Stat(util.Ldir)
-	if err != nil {
-		return fmt.Errorf("Local directory %q missing: %v", util.Ldir, err)
+	if util.Type != "RM" {
+		// Validate local directory exists for GET / PUT
+		_, err = os.Stat(util.Ldir)
+		if err != nil {
+			return fmt.Errorf("Local directory %q missing: %v", util.Ldir, err)
+		}
 	}
 
 	// Validate remote file
@@ -33,18 +35,19 @@ func (util *SftpUtil) ValidateDirs() (err error) {
 		return fmt.Errorf("Remote file %s is a directory", util.rFilePath)
 	}
 
-	if util.Type == "GET" {
-		// For Get, remote file must exist
-		if err != nil {
-			return fmt.Errorf("Problem accessing remote file %s: %v", util.rFilePath, err)
-		}
-	} else {
-		// For Put, warn if it exists
+	if util.Type == "PUT" {
+		// For PUT, warn if it exists
 		if err == nil {
 			fmt.Printf("Remote file %s already exists, will overwrite", util.rFilePath)
 		}
 		// File doesn't exist is normal, clear error
 		err = nil
+	} else {
+		// For GET or RM, remote file must exist
+		if err != nil {
+			return fmt.Errorf("Problem accessing remote file %s: %v", util.rFilePath, err)
+		}
 	}
+
 	return
 }
