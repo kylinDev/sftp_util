@@ -31,13 +31,19 @@ func main() {
 	if cmd.Type == "GET" {
 		err = cmd.GetFile()
 		if err != nil {
-			fmt.Printf("Get error: %v\n", err)
+			fmt.Printf("GET error: %v\n", err)
+			os.Exit(1)
+		}
+	} else if cmd.Type == "PUT" {
+		err = cmd.PutFile()
+		if err != nil {
+			fmt.Printf("PUT error: %v\n", err)
 			os.Exit(1)
 		}
 	} else {
-		err = cmd.PutFile()
+		err = cmd.LsDir()
 		if err != nil {
-			fmt.Printf("Put error: %v\n", err)
+			fmt.Printf("LS error: %v\n", err)
 			os.Exit(1)
 		}
 	}

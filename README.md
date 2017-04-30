@@ -1,7 +1,7 @@
 # sftp_util
 Example Go-lang command-line utility for SFTP
 * Uses the "[github.com/pkg/sftp](https://godoc.org/github.com/pkg/sftp)" and "[golang.org/x/crypto/ssh](https://godoc.org/github.com/pkg/sftp)" packages
-* Implements GET and PUT
+* Implements GET, PUT and LS
 * Preserves the unix file permissions (FileInfo.Mode)
 
 ### How to use the package
@@ -53,13 +53,19 @@ func main() {
 	if cmd.Type == "GET" {
 		err = cmd.GetFile()
 		if err != nil {
-			fmt.Printf("Get error: %v\n", err)
+			fmt.Printf("GET error: %v\n", err)
+			os.Exit(1)
+		}
+	} else if cmd.Type == "PUT" {
+		err = cmd.PutFile()
+		if err != nil {
+			fmt.Printf("PUT error: %v\n", err)
 			os.Exit(1)
 		}
 	} else {
-		err = cmd.PutFile()
+		err = cmd.LsDir()
 		if err != nil {
-			fmt.Printf("Put error: %v\n", err)
+			fmt.Printf("LS error: %v\n", err)
 			os.Exit(1)
 		}
 	}
@@ -85,12 +91,11 @@ The utility takes the following flags:
 ```sh
 Usage of ./sftp_cmd:
   -file string
-    	file (required)
+    	File to transfer
   -ldir string
     	Local directory (default ".")
   -rdir string
     	Remote directory (default ".")
   -type string
-    	GET or PUT (required)
-
+    	GET, PUT or LS (required)
 ```
