@@ -11,16 +11,16 @@ func (util *SftpUtil) init() {
 	flag.StringVar(&util.Rdir, "rdir", ".", "Remote directory")
 	flag.StringVar(&util.Ldir, "ldir", ".", "Local directory")
 	flag.StringVar(&util.Filename, "file", "", "File to transfer")
-	flag.StringVar(&util.Type, "type", "", "GET, PUT or LS (required)")
+	flag.StringVar(&util.Type, "type", "", "GET, PUT, RM or LS (required)")
 }
 
 // Make sure required arguments are specified
 func (util *SftpUtil) validateFlags() (err error) {
-	
+
 	if util.Type == "" {
 		return fmt.Errorf("-type not specified")
 	}
-	if util.Type == "GET" || util.Type == "PUT" {
+	if util.Type == "GET" || util.Type == "PUT" || util.Type == "RM" {
 		if util.Filename == "" {
 			return fmt.Errorf("-file not specified")
 		}

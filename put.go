@@ -10,7 +10,7 @@ import (
 func (util *SftpUtil) PutFile() (err error) {
 	var lfile *os.File
 	var rfile *sftp.File
-	
+
 	err = util.ValidateDirs()
 	if err != nil {
 		return
