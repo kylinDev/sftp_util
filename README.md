@@ -1,7 +1,7 @@
 # sftp_util
 Example Go-lang command-line utility for SFTP
 * Uses the "[github.com/pkg/sftp](https://godoc.org/github.com/pkg/sftp)" and "[golang.org/x/crypto/ssh](https://godoc.org/github.com/pkg/sftp)" packages
-* Implements GET, PUT and LS
+* Implements GET, PUT, RM and LS
 * Preserves the unix file permissions (FileInfo.Mode)
 
 ### How to use the package
