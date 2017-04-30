@@ -2,7 +2,6 @@ package sftp_util
 
 import (
 	"fmt"
-	"log"
 	"os"
 )
 
@@ -42,7 +41,7 @@ func (util *SftpUtil) ValidateDirs() (err error) {
 	} else {
 		// For Put, warn if it exists
 		if err == nil {
-			log.Printf("Remote file %s already exists, will overwrite", util.rFilePath)
+			fmt.Printf("Remote file %s already exists, will overwrite", util.rFilePath)
 		}
 		// File doesn't exist is normal, clear error
 		err = nil
