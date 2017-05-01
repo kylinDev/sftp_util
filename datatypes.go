@@ -22,5 +22,5 @@ type SftpUtil struct {
 	Client    *sftp.Client
 }
 
-// Byte buffer for file I/O
-const BUFSIZE = 4096
+// Byte buffer for file I/O (128K)
+const BUFSIZE = 131072
