@@ -15,18 +15,21 @@ func (util *SftpUtil) init() {
 }
 
 // Make sure required arguments are specified
-func (util *SftpUtil) validateFlags() (err error) {
+func (util *SftpUtil) ValidateOptions() (err error) {
 
 	if util.Type == "" {
-		return fmt.Errorf("-type not specified")
+		return fmt.Errorf("type not specified")
 	}
 	if util.Type == "GET" || util.Type == "PUT" || util.Type == "RM" {
 		if util.Filename == "" {
-			return fmt.Errorf("-file not specified")
+			return fmt.Errorf("file not specified")
 		}
 	} else if util.Type != "LS" {
-		return fmt.Errorf("-type must be GET, PUT or LS")
+		return fmt.Errorf("type must be GET, PUT or LS")
 	}
+
+	util.lFilePath = filepath.Join(util.Ldir, util.Filename)
+	util.rFilePath = filepath.Join(util.Rdir, util.Filename)
 
 	return
 }
@@ -40,13 +43,10 @@ func GetCmdLine() (util *SftpUtil, err error) {
 	flag.Parse()
 
 	// Validate
-	err = util.validateFlags()
+	err = util.ValidateOptions()
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("-%v", err)
 	}
-
-	util.lFilePath = filepath.Join(util.Ldir, util.Filename)
-	util.rFilePath = filepath.Join(util.Rdir, util.Filename)
 
 	// Return commandline context
 	return util, nil
