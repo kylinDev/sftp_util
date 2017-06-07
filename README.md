@@ -8,6 +8,7 @@ Example Go-lang command-line utility for SFTP
 Confugre the settings for your file transfer, as well as server and credentials, in the SftpUtil struct.  The following comments explain the fields to configure:
 ```go
 type SftpUtil struct {
+        Log       bool
 	Rdir      string // Remote directory
 	Ldir      string // Local directory
 	Filename  string // File to transfer
@@ -36,6 +37,9 @@ func main() {
 		fmt.Printf("Command-line error: %v\n", err)
 		os.Exit(1)
 	}
+	
+	//Set this if you want messages to go to log instead of fmt
+	//cmd.Log = true
 
 	cmd.User = "USER"
 	cmd.Pass = "PASSWORD"
