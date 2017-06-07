@@ -7,6 +7,7 @@ import (
 )
 
 type SftpUtil struct {
+	Log       bool
 	Rdir      string // Remote directory
 	Ldir      string // Local directory
 	Filename  string // File to transfer

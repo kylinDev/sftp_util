@@ -38,7 +38,7 @@ func (util *SftpUtil) ValidateDirs() (err error) {
 	if util.Type == "PUT" {
 		// For PUT, warn if it exists
 		if err == nil {
-			fmt.Printf("Remote file %s already exists, will overwrite", util.rFilePath)
+			util.Message("Remote file " + util.rFilePath + " already exists, will overwrite")
 		}
 		// File doesn't exist is normal, clear error
 		err = nil

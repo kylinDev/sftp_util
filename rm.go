@@ -14,7 +14,7 @@ func (util *SftpUtil) RmFile() (err error) {
 	if err != nil {
 		return fmt.Errorf("Cannot remove remote file: %v", err)
 	}
-	fmt.Printf("Removed File %s\n", util.rFilePath)
+	util.Message("Removed File " + util.rFilePath)
 
 	return
 }

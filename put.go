@@ -30,7 +30,7 @@ func (util *SftpUtil) PutFile() (err error) {
 		return fmt.Errorf("Cannot create remote file: %v", err)
 	}
 
-	fmt.Printf("Putting File %s\n", util.rFilePath)
+	util.Message("Putting File " + util.rFilePath)
 	var b []byte = make([]byte, BUFSIZE)
 	var n, m int
 	for {

@@ -26,7 +26,7 @@ func (util *SftpUtil) GetFile() (err error) {
 		return fmt.Errorf("Cannot write local file: %v", err)
 	}
 
-	fmt.Printf("Getting File %s\n", util.rFilePath)
+	util.Message("Getting File " + util.rFilePath)
 	var b []byte = make([]byte, BUFSIZE)
 	var n, m int
 	for {

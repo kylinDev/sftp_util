@@ -20,7 +20,7 @@ func (util *SftpUtil) Connect() (err error) {
 
 	// LS will give directory listing, no other output
 	if util.Type != "LS" {
-		fmt.Printf("Connecting to %s\n", server)
+		util.Message("Connecting to " + server)
 	}
 
 	config := &ssh.ClientConfig{
