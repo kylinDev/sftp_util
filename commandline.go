@@ -8,6 +8,7 @@ import (
 
 func (util *SftpUtil) init() {
 	// Define command-line arguments
+	flag.BoolVar(&util.NoChmod, "nochmod", false, "Don't attempt to set remote file permissions")
 	flag.StringVar(&util.Rdir, "rdir", ".", "Remote directory")
 	flag.StringVar(&util.Ldir, "ldir", ".", "Local directory")
 	flag.StringVar(&util.Filename, "file", "", "File to transfer")

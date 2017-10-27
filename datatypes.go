@@ -8,6 +8,7 @@ import (
 
 type SftpUtil struct {
 	Log       bool
+	NoChmod   bool
 	Rdir      string // Remote directory
 	Ldir      string // Local directory
 	Filename  string // File to transfer
