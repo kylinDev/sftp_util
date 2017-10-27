@@ -50,10 +50,11 @@ func (util *SftpUtil) PutFile() (err error) {
 		}
 	}
 
-	err = util.Client.Chmod(util.rFilePath, util.lFileInfo.Mode())
-	if err != nil {
-		return fmt.Errorf("Cannot set remote file permissions: %v", err)
+	if !util.NoChmod {
+		err = util.Client.Chmod(util.rFilePath, util.lFileInfo.Mode())
+		if err != nil {
+			return fmt.Errorf("Cannot set remote file permissions: %v", err)
+		}
 	}
-
 	return
 }
