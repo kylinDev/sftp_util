@@ -15,6 +15,7 @@ type SftpUtil struct {
 	Type      string // GET or PUT
 	User      string // Username
 	Pass      string // Password
+	KeyFile   string // RSA Key file
 	Host      string // Hostname or IP Address
 	Port      string // TCP port
 	lFilePath string
