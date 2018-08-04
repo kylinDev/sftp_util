@@ -8,7 +8,6 @@ Example Go-lang command-line utility for SFTP
 Confugre the settings for your file transfer, as well as server and credentials, in the SftpUtil struct.  The following comments explain the fields to configure:
 ```go
 type SftpUtil struct {
-	Log       bool
 	Rdir      string // Remote directory
 	Ldir      string // Local directory
 	Filename  string // File to transfer
