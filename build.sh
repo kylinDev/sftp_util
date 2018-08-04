@@ -4,7 +4,7 @@ export PROJECT=github.com/DavidSantia/sftp_util
 
 # Build for Linux, statically linked
 
-export NAME=sftp_cmd
+export NAME=sftp-cmd
 
 echo "## Building $NAME utility"
 docker run --rm --name golang -v $GOPATH/src:/go/src golang:alpine /bin/sh -l -c \

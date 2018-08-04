@@ -2,19 +2,24 @@ package sftp_util
 
 import (
 	"fmt"
+	"log"
+	"path/filepath"
 )
 
-func (util *SftpUtil) RmFile() (err error) {
-	err = util.ValidateDirs()
+func (sftpSettings *SftpSettings) RmFile() (err error) {
+	var remoteFilename string
+
+	// Validate directory
+	err = validateRemoteDir(sftpSettings.Client, sftpSettings.Rdir)
 	if err != nil {
 		return
 	}
+	remoteFilename = filepath.Join(sftpSettings.Rdir, sftpSettings.Filename)
 
-	err = util.Client.Remove(util.rFilePath)
+	log.Printf("Removing %s", remoteFilename)
+	err = sftpSettings.Client.Remove(remoteFilename)
 	if err != nil {
-		return fmt.Errorf("Cannot remove remote file: %v", err)
+		err = fmt.Errorf("cannot remove remote file: %v", err)
 	}
-	util.Message("Removed File " + util.rFilePath)
-
 	return
 }
