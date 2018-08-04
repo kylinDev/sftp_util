@@ -6,7 +6,10 @@ import (
 	"github.com/pkg/sftp"
 )
 
-type SftpUtil struct {
+// Byte buffer for file I/O (128K)
+const SFTP_BUFSIZE = 131072
+
+type SftpSettings struct {
 	Log       bool
 	NoChmod   bool
 	Rdir      string // Remote directory
@@ -18,12 +21,7 @@ type SftpUtil struct {
 	KeyFile   string // RSA Key file
 	Host      string // Hostname or IP Address
 	Port      string // TCP port
-	lFilePath string
-	rFilePath string
 	lFileInfo os.FileInfo
 	rFileInfo os.FileInfo
 	Client    *sftp.Client
 }
-
-// Byte buffer for file I/O (128K)
-const BUFSIZE = 131072

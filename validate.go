@@ -3,51 +3,85 @@ package sftp_util
 import (
 	"fmt"
 	"os"
+	"path/filepath"
+
+	"github.com/pkg/sftp"
 )
 
-func (util *SftpUtil) ValidateDirs() (err error) {
+func validateFile(filename string) (fileInfo os.FileInfo, err error) {
+	var fullpath string
+
+	fullpath, err = filepath.Abs(filename)
+	if err != nil {
+		err = fmt.Errorf("%v [%s]", err, filename)
+		return
+	}
+	fileInfo, err = os.Stat(fullpath)
+	if os.IsNotExist(err) {
+		err = fmt.Errorf("invalid, no such file [%s]", filename)
+		return
+	} else if os.IsPermission(err) {
+		err = fmt.Errorf("invalid, permission denied [%s]", filename)
+		return
+	} else if err != nil {
+		err = fmt.Errorf("invalid, %v [%s]", err, filename)
+		return
+	} else if fileInfo.IsDir() {
+		err = fmt.Errorf("invalid, filename is a directory [%s]", filename)
+	}
+	return
+}
+
+func validateDir(dirname string) (err error) {
+	var fullpath string
+	var dirInfo os.FileInfo
+
+	fullpath, err = filepath.Abs(dirname)
+	if err != nil {
+		err = fmt.Errorf("%v [%s]", err, dirname)
+		return
+	}
+	dirInfo, err = os.Stat(fullpath)
+	if os.IsNotExist(err) {
+		err = fmt.Errorf("invalid, no such directory [%s]", dirname)
+		return
+	} else if os.IsPermission(err) {
+		err = fmt.Errorf("invalid, permission denied [%s]", dirname)
+		return
+	} else if err != nil {
+		err = fmt.Errorf("invalid, %v [%s]", err, dirname)
+		return
+	} else if !dirInfo.IsDir() {
+		err = fmt.Errorf("invalid, not a directory [%s]", dirname)
+	}
+	return
+}
+
+func validateRemoteDir(client *sftp.Client, dirname string) (err error) {
 	var remoteDirInfo os.FileInfo
 
 	// Validate remote directory exists
-	remoteDirInfo, err = util.Client.Stat(util.Rdir)
+	remoteDirInfo, err = client.Stat(dirname)
 	if err != nil {
-		return fmt.Errorf("Problem accessing remote directory %s: %v", util.Rdir, err)
-	}
-	if !remoteDirInfo.IsDir() {
-		return fmt.Errorf("Remote path %s is not a directory", util.Rdir)
-	}
-	if util.Type == "LS" {
-		// For LS, nothing more to check
+		err = fmt.Errorf("accessing remote directory %s: %v", dirname, err)
 		return
 	}
-
-	if util.Type != "RM" {
-		// Validate local directory exists for GET / PUT
-		_, err = os.Stat(util.Ldir)
-		if err != nil {
-			return fmt.Errorf("Local directory %q missing: %v", util.Ldir, err)
-		}
+	if !remoteDirInfo.IsDir() {
+		err = fmt.Errorf("remote path %s is not a directory", dirname)
 	}
+	return
+}
 
-	// Validate remote file
-	util.rFileInfo, err = util.Client.Stat(util.rFilePath)
-	if err == nil && util.rFileInfo.IsDir() {
-		return fmt.Errorf("Remote file %s is a directory", util.rFilePath)
+func validateRemoteFile(client *sftp.Client, filename string) (remoteFileInfo os.FileInfo, err error) {
+
+	// Validate remote directory exists
+	remoteFileInfo, err = client.Stat(filename)
+	if err != nil {
+		err = fmt.Errorf("accessing remote file %s: %v", filename, err)
+		return
 	}
-
-	if util.Type == "PUT" {
-		// For PUT, warn if it exists
-		if err == nil {
-			util.Message("Remote file " + util.rFilePath + " already exists, will overwrite")
-		}
-		// File doesn't exist is normal, clear error
-		err = nil
-	} else {
-		// For GET or RM, remote file must exist
-		if err != nil {
-			return fmt.Errorf("Problem accessing remote file %s: %v", util.rFilePath, err)
-		}
+	if remoteFileInfo.IsDir() {
+		err = fmt.Errorf("remote path %s is a directory", filename)
 	}
-
 	return
 }

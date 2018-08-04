@@ -5,20 +5,20 @@ import (
 	"os"
 )
 
-func (util *SftpUtil) LsDir() (err error) {
+func (sftpSettings *SftpSettings) LsDir() (err error) {
 	var dir []os.FileInfo
 	var file os.FileInfo
 
-	err = util.ValidateDirs()
+	// Validate directories and files
+	err = validateRemoteDir(sftpSettings.Client, sftpSettings.Rdir)
 	if err != nil {
 		return
 	}
 
-	dir, err = util.Client.ReadDir(util.Rdir)
+	dir, err = sftpSettings.Client.ReadDir(sftpSettings.Rdir)
 	if err != nil {
-		return fmt.Errorf("Cannot read remote directory: %v", err)
+		return fmt.Errorf("cannot read remote directory: %v", err)
 	}
-
 	for _, file = range dir {
 		if file.IsDir() {
 			// Only list files
@@ -26,6 +26,5 @@ func (util *SftpUtil) LsDir() (err error) {
 		}
 		fmt.Println(file.Name())
 	}
-
 	return
 }

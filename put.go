@@ -2,58 +2,71 @@ package sftp_util
 
 import (
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/pkg/sftp"
+	"path/filepath"
 )
 
-func (util *SftpUtil) PutFile() (err error) {
-	var lfile *os.File
-	var rfile *sftp.File
+func (sftpSettings *SftpSettings) PutFile() (err error) {
+	var localFile *os.File
+	var localFileInfo os.FileInfo
+	var remoteFile *sftp.File
+	var localFilename, remoteFilename string
 
-	err = util.ValidateDirs()
+	// Validate directories and files
+	err = validateDir(sftpSettings.Ldir)
+	if err != nil {
+		return
+	}
+	err = validateRemoteDir(sftpSettings.Client, sftpSettings.Rdir)
+	if err != nil {
+		return
+	}
+	localFilename = filepath.Join(sftpSettings.Ldir, sftpSettings.Filename)
+	localFileInfo, err = validateFile(localFilename)
 	if err != nil {
 		return
 	}
 
-	util.lFileInfo, err = os.Stat(util.lFilePath)
+	// Open local file to read
+	localFile, err = os.Open(localFilename)
 	if err != nil {
-		return fmt.Errorf("Cannot get local file permissions: %v", err)
-	}
-	lfile, err = os.Open(util.lFilePath)
-	if err != nil {
-		return fmt.Errorf("Cannot open local file: %v", err)
+		return fmt.Errorf("cannot open local file: %v", err)
 	}
 
-	rfile, err = util.Client.Create(util.rFilePath)
+	// Open remote file to write
+	remoteFilename = filepath.Join(sftpSettings.Rdir, sftpSettings.Filename)
+	remoteFile, err = sftpSettings.Client.Create(remoteFilename)
 	if err != nil {
 		return fmt.Errorf("Cannot create remote file: %v", err)
 	}
 
-	util.Message("Putting File " + util.rFilePath)
-	var b []byte = make([]byte, BUFSIZE)
+	log.Printf("Putting %s", remoteFilename)
+	var b []byte = make([]byte, SFTP_BUFSIZE)
 	var n, m int
 	for {
-		n, err = lfile.Read(b)
-		m, err = rfile.Write(b[:n])
+		n, err = localFile.Read(b)
+		m, err = remoteFile.Write(b[:n])
 		if err != nil {
-			return fmt.Errorf("Problem writing remote file: %v", err)
+			return fmt.Errorf("writing remote file: %v", err)
 		}
 		if n != m {
-			return fmt.Errorf("Attempted to write %d bytes, but wrote %d to remote file", n, m)
+			return fmt.Errorf("attempted to write %d bytes, but wrote %d to remote file", n, m)
 		}
 
-		if n != BUFSIZE {
-			lfile.Close()
-			rfile.Close()
+		if n != SFTP_BUFSIZE {
+			remoteFile.Close()
+			localFile.Close()
 			break
 		}
 	}
 
-	if !util.NoChmod {
-		err = util.Client.Chmod(util.rFilePath, util.lFileInfo.Mode())
+	if !sftpSettings.NoChmod {
+		err = sftpSettings.Client.Chmod(remoteFilename, localFileInfo.Mode())
 		if err != nil {
-			return fmt.Errorf("Cannot set remote file permissions: %v", err)
+			return fmt.Errorf("cannot set remote file permissions: %v", err)
 		}
 	}
 	return
