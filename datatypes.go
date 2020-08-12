@@ -2,6 +2,7 @@ package sftp_util
 
 import (
 	"github.com/pkg/sftp"
+	"golang.org/x/crypto/ssh"
 )
 
 // Byte buffer for file I/O (128K)
@@ -19,4 +20,5 @@ type SftpSettings struct {
 	Host     string // Hostname or IP Address
 	Port     string // TCP port
 	Client   *sftp.Client
+	SshCleint *ssh.Client
 }
