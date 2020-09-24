@@ -7,7 +7,6 @@ import (
 
 // Byte buffer for file I/O (128K)
 const SFTP_BUFSIZE = 131072
-
 type SftpSettings struct {
 	NoChmod  bool
 	Rdir     string // Remote directory
