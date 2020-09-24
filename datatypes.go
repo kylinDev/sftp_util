@@ -20,5 +20,5 @@ type SftpSettings struct {
 	Host     string // Hostname or IP Address
 	Port     string // TCP port
 	Client   *sftp.Client
-	SshCleint *ssh.Client
+	SshClient *ssh.Client
 }
